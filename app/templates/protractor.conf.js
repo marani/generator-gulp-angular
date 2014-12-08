@@ -8,7 +8,7 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
-      'args': ['no-sandbox=true']
+      'args': ['no-sandbox']
     }
   },
 
