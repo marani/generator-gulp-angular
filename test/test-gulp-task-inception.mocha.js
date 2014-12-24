@@ -221,6 +221,55 @@ describe('gulp-angular generator', function () {
     });
   });
 
+  describe('with default options: [angular 1.2.x, jQuery 2.x.x, Restangular, UI-Router, Bootstrap, ui-bootstrap, ruby-sass, ES6 with Traceur]', function () {
+
+    before(function () {
+      promptCase = _.assign(defaults, {
+        angularVersion: prompts.angularVersion.values['1.2'],
+        jQuery: prompts.jQuery.values['jquery 2'],
+        resource: prompts.resource.values.restangular,
+        router: prompts.router.values['angular-ui-router'],
+        ui: prompts.ui.values.bootstrap,
+        bootstrapComponents: prompts.bootstrapComponents.values['ui-bootstrap'],
+        cssPreprocessor: prompts.cssPreprocessor.values['ruby-sass'],
+        jsPreprocessor: prompts.jsPreprocessor.values.traceur
+      });
+    });
+
+    it('should pass gulp build', function () {
+      helpers.mockPrompt(gulpAngular, promptCase);
+
+      return this.run(100000, 'build').should.be.fulfilled.then(function () {
+        assert.ok(fs.statSync(tempDirDist + '/index.html').isFile(), 'File not exist');
+        assert.ok(fs.statSync(tempDirDist + '/404.html').isFile(), 'File not exist');
+        assert.ok(fs.statSync(tempDirDist + '/favicon.ico').isFile(), 'File not exist');
+        assert.ok(fs.statSync(tempDirDist + '/assets').isDirectory(), 'Directory not exist');
+        assert.ok(fs.statSync(tempDirDist + '/assets/images').isDirectory(), 'Directory not exist');
+        assert.ok(fs.statSync(tempDirDist + '/fonts').isDirectory(), 'Directory not exist');
+        assert.ok(fs.statSync(tempDirDist + '/scripts').isDirectory(), 'Directory not exist');
+        assert.ok(fs.statSync(tempDirDist + '/styles').isDirectory(), 'Directory not exist');
+      });
+    });
+
+    it('should pass gulp test', function () {
+      helpers.mockPrompt(gulpAngular, promptCase);
+
+      return this.run(100000, 'test').should.be.fulfilled;
+    });
+
+    it('should pass gulp protractor', function () {
+      helpers.mockPrompt(gulpAngular, promptCase);
+
+      return this.run(100000, 'protractor').should.be.fulfilled;
+    });
+
+    it('should pass gulp protractor:dist', function () {
+      helpers.mockPrompt(gulpAngular, promptCase);
+
+      return this.run(100000, 'protractor:dist').should.be.fulfilled;
+    });
+  });
+
   describe('with other promptCase: [angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, $http, ngMaterial, Stylus, TypeScript]', function () {
 
     before(function () {

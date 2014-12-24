@@ -16,7 +16,10 @@ gulp.task('styles', ['wiredep', 'injector:css:preprocessor'], function () {<% if
       ]
     }))<% } else if (props.cssPreprocessor.key === 'ruby-sass') { %>
   return gulp.src(['src/app/index.scss', 'src/app/vendor.scss'])
-    .pipe($.rubySass({style: 'expanded'}))<% } else if (props.cssPreprocessor.key === 'node-sass') { %>
+    .pipe($.rubySass({
+      style: 'expanded', 
+      'sourcemap=none': true
+    }))<% } else if (props.cssPreprocessor.key === 'node-sass') { %>
   return gulp.src(['src/app/index.scss', 'src/app/vendor.scss'])
     .pipe($.sass({style: 'expanded'}))<% } else if (props.cssPreprocessor.key === 'stylus') { %>
   return gulp.src(['src/app/index.styl', 'src/app/vendor.styl'])
