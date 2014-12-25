@@ -10,10 +10,24 @@ module.exports = function () {
     this.props = this.config.get('props');
 
     var options = this.config.get('options');
-    this._.forEach(options, function(value, key) {
-      this.options[key] = options[key];
+    this._.forEach(options, function(value, name) {
+      this.options[name] = value;
     }.bind(this));
   }
+
+  // Format paths
+  // this.paths stores pairs of source:dest folder
+  this.paths = {
+    src: this.options['app-path'],
+    dist: this.options['dist-path'],
+    e2e: this.options['e2e-path'],
+    tmp: this.options['tmp-path']
+  };
+  // this.computedPaths stores relative pairs of paths
+  // to make things convenient for templating
+  this.computedPaths = {
+    appToBower: path.relative(this.paths.src, '')
+  };
 
   // Format list ngModules included in AngularJS DI
   var ngModules = this.props.angularModules.map(function (module) {
@@ -202,13 +216,4 @@ module.exports = function () {
         replace(/"/g,'\'')); // Replace " with ' and assume this won't break anything.
     this.consolidateExtensions.push(preprocessor.extension);
   }.bind(this));
-
-  // Format paths
-  this.paths = {
-    app: this.options['app-path'],
-    dist: this.options['dist-path'],
-    e2e: this.options['e2e-path'],
-    tmp: this.options['tmp-path']
-  };
-  this.paths.appToBower = path.relative(this.paths.app, '');
 };

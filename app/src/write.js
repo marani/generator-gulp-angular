@@ -7,9 +7,20 @@ var path = require('path');
 module.exports = function () {
   var _ = this._;
 
+  // Replace sourceFolder with destFolder in destination path
+  function applyPathConfig(filePath, folderPairs) {
+    var result = filePath;
+    _.forEach(folderPairs, function(destFolder, sourceFolder) {
+      if (filePath.indexOf(sourceFolder) === 0)
+        result = filePath.replace(sourceFolder, destFolder);
+    });
+    return result;
+  }
+
   // Copy static files
   _.forEach(files.staticFiles, function(src) {
-    this.fs.copy(this.templatePath(src),  this.destinationPath(src));
+    var dest = applyPathConfig(src, this.paths);
+    this.fs.copy(this.templatePath(src),  this.destinationPath(dest));
   }.bind(this));
 
   // Copy dot files
@@ -19,16 +30,20 @@ module.exports = function () {
 
   // Copy files formatted (format.js) with options selected in prompt
   _.forEach(this.technologiesLogoCopies, function(src) {
-    this.fs.copy(this.templatePath(src),  this.destinationPath(src));
+    var dest = applyPathConfig(src, this.paths);
+    this.fs.copy(this.templatePath(src),  this.destinationPath(dest));
   }.bind(this));
   _.forEach(this.partialCopies, function(value, key) {
-    this.fs.copy(this.templatePath(key),  this.destinationPath(value));
+    var dest = applyPathConfig(value, this.paths);
+    this.fs.copy(this.templatePath(key),  this.destinationPath(dest));
   }.bind(this));
   _.forEach(this.styleCopies, function(value, key) {
-    this.fs.copy(this.templatePath(key),  this.destinationPath(value));
+    var dest = applyPathConfig(value, this.paths);
+    this.fs.copy(this.templatePath(key),  this.destinationPath(dest));
   }.bind(this));
   _.forEach(this.srcTemplates, function(value, key) {
-    this.template(key, value);
+    var dest = applyPathConfig(value, this.paths);
+    this.template(key, dest);
   }.bind(this));
   _.forEach(this.lintConfCopies, function(src) {
     this.fs.copy(this.templatePath(src),  this.destinationPath(src));
@@ -40,6 +55,7 @@ module.exports = function () {
   _.forEach(files.templates, function(dest) {
     basename = path.basename(dest);
     src = dest.replace(basename, '_' + basename);
+    dest = applyPathConfig(dest, this.paths);
     this.fs.copyTpl(this.templatePath(src),  this.destinationPath(dest), this);
   }.bind(this));
 };
