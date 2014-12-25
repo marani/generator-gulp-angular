@@ -6,17 +6,31 @@ var yosay = require('yosay');
 var chalk = require('chalk');
 
 var prompts = require('./prompts.json');
+var options = require('./options.json');
+var utils = require('./src/utils.js');
 
 var GulpAngularGenerator = yeoman.generators.Base.extend({
 
-  init: function () {
+  constructor: function () {
+    yeoman.generators.Base.apply(this, arguments);
+
     // Define the appName
     this.argument('appName', {
       type: String,
       required: false
     });
+
     this.appName = this.appName || path.basename(process.cwd());
     this.appName = this._.camelize(this._.slugify(this._.humanize(this.appName)));
+
+    options.forEach(function(option) {
+      this.option(option.name, {
+        type: global[option.type],
+        required: option.required,
+        desc: option.desc,
+        defaults: option.defaults
+      });
+    }.bind(this));
   },
 
   info: function () {
@@ -28,7 +42,9 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
     }
     if (this.options['default']) {
       var mockPrompts = require('./src/mock-prompts.js');
+      var mockOptions = require('./src/mock-options.js');
       this.config.set('props', mockPrompts.defaults);
+      this.config.set('options', mockOptions.defaults);
 
       this.log('__________________________');
       this.log('You use ' + chalk.green('--default') + ' option:');
@@ -40,7 +56,7 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
   checkYoRc: function() {
     var cb = this.async();
 
-    if(this.config.get('props') && !this.options['default']) {
+    if(this.config.get('props') && this.config.get('options') && !this.options['default']) {
       this.prompt([{
         type: 'confirm',
         name: 'skipConfig',
@@ -54,6 +70,24 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
     } else {
       cb();
     }
+  },
+
+  retrieveOptions: function() {
+    if (this.skipConfig || this.options['default']) {
+      return;
+    }
+
+    ['app-path', 'dist-path', 'e2e-path', 'tmp-path'].forEach(function (name) {
+      this.options[name] = utils.normalizePath(this.options[name]);
+    }.bind(this));
+
+    var savingOptions = {};
+    options.forEach(function(option) {
+      if (option.save) {
+        savingOptions[option.name] = this.options[option.name];
+      }
+    }.bind(this));
+    this.config.set('options', savingOptions);
   },
 
   askQuestions: function () {

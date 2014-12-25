@@ -5,9 +5,14 @@ var path = require('path');
 module.exports = function () {
   var _ = this._;
 
-  // Retrieve props stored in .yo-rc.json
+  // Retrieve props & options stored in .yo-rc.json
   if (this.skipConfig || this.options['default']) {
     this.props = this.config.get('props');
+
+    var options = this.config.get('options');
+    this._.forEach(options, function(value, key) {
+      this.options[key] = options[key];
+    }.bind(this));
   }
 
   // Format list ngModules included in AngularJS DI
@@ -198,4 +203,12 @@ module.exports = function () {
     this.consolidateExtensions.push(preprocessor.extension);
   }.bind(this));
 
+  // Format paths
+  this.paths = {
+    app: this.options['app-path'],
+    dist: this.options['dist-path'],
+    e2e: this.options['e2e-path'],
+    tmp: this.options['tmp-path']
+  };
+  this.paths.appToBower = path.relative(this.paths.app, '');
 };
