@@ -78,13 +78,14 @@ describe('gulp-angular generator', function () {
     ];
 
     defaultPrompts = JSON.parse(JSON.stringify(mockPrompts.defaults));
-    defaultOptions = _.assign(JSON.parse(JSON.stringify(mockPrompts.defaults)), {
+    defaultOptions = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), {
       'skip-install': true,
       'skip-welcome-message': true,
       'skip-message': true
     });
 
     helpers.testDirectory(path.join(__dirname, folderName), function (err) {
+      console.log('ok');
       if (err) {
         done(err);
       }
@@ -110,7 +111,7 @@ describe('gulp-angular generator', function () {
     it('should generate the expected files and their content', function (done) {
       helpers.mockPrompt(gulpAngular, defaultPrompts);
 
-      gulpAngular.run(defaultOptions, function () {
+      gulpAngular.run({}, function () {
         assert.file([].concat(expectedFile, [
           // Option: Javascript
           'src/app/index.js',
@@ -1002,7 +1003,7 @@ describe('gulp-angular generator', function () {
         return file;
       });
 
-      gulpAngular.run(defaultOptions, function () {
+      gulpAngular.run({}, function () {
         assert.file([].concat(expectedFile, [
           // Option: Javascript
           defaultOptions['app-path'] + '/app/index.js',

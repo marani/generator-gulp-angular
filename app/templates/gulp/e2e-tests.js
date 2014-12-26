@@ -6,6 +6,8 @@ var $ = require('gulp-load-plugins')();
 
 var browserSync = require('browser-sync');
 
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
+
 // Downloads the selenium webdriver
 gulp.task('webdriver-update', $.protractor.webdriver_update);
 
@@ -13,7 +15,7 @@ gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
 
 function runProtractor (done) {
 
-  gulp.src(testFiles)
+  gulp.src(paths.e2e + '/**/*.js')
     .pipe($.protractor.protractor({
       configFile: 'protractor.conf.js',
     }))
