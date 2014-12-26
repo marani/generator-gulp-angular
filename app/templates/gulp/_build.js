@@ -173,8 +173,8 @@ gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials'], functi
       quotes: true
     }))
     .pipe(htmlFilter.restore())
-    .pipe(gulp.dest('dist/'))
-    .pipe($.size({ title: 'dist/', showFiles: true }));
+    .pipe(gulp.dest(paths.dist + '/'))
+    .pipe($.size({ title: paths.dist + '/', showFiles: true }));
 });
 
 gulp.task('images', function () {
@@ -184,23 +184,23 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     }))
-    .pipe(gulp.dest('dist/assets/images/'));
+    .pipe(gulp.dest(paths.dist + '/assets/images/'));
 });
 
 gulp.task('fonts', function () {
   return gulp.src($.mainBowerFiles())
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
     .pipe($.flatten())
-    .pipe(gulp.dest('dist/fonts/'));
+    .pipe(gulp.dest(paths.dist + '/fonts/'));
 });
 
 gulp.task('misc', function () {
   return gulp.src(paths.src + '/**/*.ico')
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest(paths.dist + '/'));
 });
 
 gulp.task('clean', function (done) {
-  $.del(['dist/', paths.tmp + '/'], done);
+  $.del([paths.dist + '/', paths.tmp + '/'], done);
 });
 
 gulp.task('build', ['html', 'images', 'fonts', 'misc']);
