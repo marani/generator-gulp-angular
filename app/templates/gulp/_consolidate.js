@@ -4,7 +4,7 @@ var consolidate = require('gulp-consolidate');
 var rename = require('gulp-rename');
 var gulp = require('gulp');
 
-var paths = require('../.yo-rc.json').props.paths;
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
 
 var engines = [
   <%= consolidateParameters.join(',\n  ') %>

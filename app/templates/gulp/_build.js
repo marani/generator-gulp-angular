@@ -6,7 +6,7 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
 });
 
-var paths = require('../.yo-rc.json').props.paths;
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
 <% if (props.cssPreprocessor.key !== 'none') { %>
 gulp.task('styles', ['wiredep', 'injector:css:preprocessor'], function () {<% if (props.cssPreprocessor.key === 'less') { %>
   return gulp.src([paths.src + '/app/index.less', paths.src + '/app/vendor.less'])

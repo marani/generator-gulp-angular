@@ -12,9 +12,6 @@ gulp.task('webdriver-update', $.protractor.webdriver_update);
 gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
 
 function runProtractor (done) {
-  var testFiles = [
-    'test/e2e/**/*.js'
-  ];
 
   gulp.src(testFiles)
     .pipe($.protractor.protractor({

@@ -2,7 +2,7 @@
 
 var gulp = require('gulp');
 
-var paths = require('../.yo-rc.json').props.paths;
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
 
 // inject bower components
 gulp.task('wiredep', function () {

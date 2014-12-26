@@ -6,7 +6,7 @@ var $ = require('gulp-load-plugins')();
 
 var wiredep = require('wiredep');
 
-var paths = require('../.yo-rc.json').props.paths;
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
 <% if (props.jsPreprocessor.key === 'none') { %>
 gulp.task('test', function() { <% } else if (props.jsPreprocessor.extension === 'js') { %>
 gulp.task('test', ['browserify'], function() { <% } else { %>

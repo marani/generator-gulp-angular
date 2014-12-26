@@ -10,10 +10,14 @@ module.exports = function () {
     this.props = this.config.get('props');
   }
 
+  // Format appName
+  this.appName = this.appName || path.basename(process.cwd());
+  this.appName = this._.camelize(this._.slugify(this._.humanize(this.appName)));
+
   // Format paths
   // this.props.paths stores pairs of source:dest folder
-  // this.computedPaths stores relative pairs of paths
-  // to make it easy for templating
+  // this.computedPaths stores relative path between 
+  // pairs of paths in this.props.paths
   this.computedPaths = {
     appToBower: path.relative(this.props.paths.src, '')
   };

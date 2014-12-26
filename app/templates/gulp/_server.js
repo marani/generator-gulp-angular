@@ -8,7 +8,7 @@ var browserSync = require('browser-sync');
 
 var middleware = require('./proxy');
 
-var paths = require('../.yo-rc.json').props.paths;
+var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
 
 function browserSyncInit(baseDir, files, browser) {
   browser = browser === undefined ? 'default' : browser;

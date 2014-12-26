@@ -20,9 +20,6 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
       required: false
     });
 
-    this.appName = this.appName || path.basename(process.cwd());
-    this.appName = this._.camelize(this._.slugify(this._.humanize(this.appName)));
-
     options.forEach(function(option) {
       this.option(option.name, {
         type: global[option.type],
