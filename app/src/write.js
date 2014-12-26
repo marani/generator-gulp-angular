@@ -30,7 +30,10 @@ module.exports = function () {
   }.bind(this));
   _.forEach(this.styleCopies, function(value, key) {
     var dest = utils.replacePrefix(value, this.props.paths);
-    this.fs.copy(this.templatePath(key),  this.destinationPath(dest));
+    if (key.indexOf(vendor) === -1)
+      this.fs.copy(this.templatePath(key),  this.destinationPath(dest));
+    else
+      this.fs.copyTpl(this.templatePath(key), this.destinationPath(dest));
   }.bind(this));
   _.forEach(this.srcTemplates, function(value, key) {
     var dest = utils.replacePrefix(value, this.props.paths);
