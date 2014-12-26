@@ -43,8 +43,11 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
     if (this.options['default']) {
       var mockPrompts = require('./src/mock-prompts.js');
       var mockOptions = require('./src/mock-options.js');
+      var savableOptionsDefaults = this._.filter(mockOptions.defaults, function(value, name) {
+        return options[option.name].save;
+      });
       this.config.set('props', mockPrompts.defaults);
-      this.config.set('options', mockOptions.defaults);
+      this.config.set('options', savableOptionsDefaults);
 
       this.log('__________________________');
       this.log('You use ' + chalk.green('--default') + ' option:');
@@ -56,7 +59,7 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
   checkYoRc: function() {
     var cb = this.async();
 
-    if(this.config.get('props') && this.config.get('options') && !this.options['default']) {
+    if(this.config.get('props') && !this.options['default']) {
       this.prompt([{
         type: 'confirm',
         name: 'skipConfig',
@@ -81,13 +84,14 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
       this.options[name] = utils.normalizePath(this.options[name]);
     }.bind(this));
 
-    var savingOptions = {};
-    options.forEach(function(option) {
-      if (option.save) {
-        savingOptions[option.name] = this.options[option.name];
+    this.props = {
+      paths: {
+        src: this.options['app-path'],
+        dist: this.options['dist-path'],
+        e2e: this.options['e2e-path'],
+        tmp: this.options['tmp-path']
       }
-    }.bind(this));
-    this.config.set('options', savingOptions);
+    }
   },
 
   askQuestions: function () {
@@ -124,7 +128,7 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
         };
       }
 
-      this.props = props;
+      this.props = this._.merge(this.props, props);
       this.config.set('props', this.props);
 
       done();

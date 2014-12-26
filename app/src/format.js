@@ -5,28 +5,17 @@ var path = require('path');
 module.exports = function () {
   var _ = this._;
 
-  // Retrieve props & options stored in .yo-rc.json
+  // Retrieve props stored in .yo-rc.json
   if (this.skipConfig || this.options['default']) {
     this.props = this.config.get('props');
-
-    var options = this.config.get('options');
-    this._.forEach(options, function(value, name) {
-      this.options[name] = value;
-    }.bind(this));
   }
 
   // Format paths
-  // this.paths stores pairs of source:dest folder
-  this.paths = {
-    src: this.options['app-path'],
-    dist: this.options['dist-path'],
-    e2e: this.options['e2e-path'],
-    tmp: this.options['tmp-path']
-  };
+  // this.props.paths stores pairs of source:dest folder
   // this.computedPaths stores relative pairs of paths
-  // to make things convenient for templating
+  // to make it easy for templating
   this.computedPaths = {
-    appToBower: path.relative(this.paths.src, '')
+    appToBower: path.relative(this.props.paths.src, '')
   };
 
   // Format list ngModules included in AngularJS DI
