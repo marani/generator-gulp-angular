@@ -14,7 +14,12 @@ describe('gulp-angular generator', function () {
 
   var prompts = JSON.parse(JSON.stringify(mockPrompts.prompts));
   var defaultPrompts;
-  var defaultOptions;
+  var optionCase;
+  var skipOptions = {
+    'skip-install': true,
+    'skip-welcome-message': true,
+    'skip-message': true
+  };
 
   var libRegexp = mockPrompts.libRegexp;
 
@@ -78,14 +83,8 @@ describe('gulp-angular generator', function () {
     ];
 
     defaultPrompts = JSON.parse(JSON.stringify(mockPrompts.defaults));
-    defaultOptions = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), {
-      'skip-install': true,
-      'skip-welcome-message': true,
-      'skip-message': true
-    });
 
     helpers.testDirectory(path.join(__dirname, folderName), function (err) {
-      console.log('ok');
       if (err) {
         done(err);
       }
@@ -96,7 +95,7 @@ describe('gulp-angular generator', function () {
           '../../app',
         ],
         false,
-        defaultOptions
+        optionCase
       );
 
       gulpAngular.on('run', outputInTest.mute);
@@ -106,8 +105,12 @@ describe('gulp-angular generator', function () {
     });
   });
 
-  describe('with default options: [src, dist, e2e, .tmp] [angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, jQuery 1.x.x, ngResource, ngRoute, bootstrap, ui-bootstrap, node-sass, Standard JS, Jade]', function () {
+  describe('with default config: [src, dist, e2e, .tmp] [angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, jQuery 1.x.x, ngResource, ngRoute, bootstrap, ui-bootstrap, node-sass, Standard JS, Jade]', function () {
     // Default scenario: angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, jQuery 1.x.x, ngResource, ngRoute, bootstrap, node-sass, standard js, jade
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should generate the expected files and their content', function (done) {
       helpers.mockPrompt(gulpAngular, defaultPrompts);
 
@@ -177,7 +180,11 @@ describe('gulp-angular generator', function () {
   });
   
   // Prompt #1: Which version of Angular ?
-  describe('with option: [angular 1.2.x]', function () {
+  describe('with prompt: [angular 1.2.x]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for angular 1.2.x', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         'angularVersion': prompts.angularVersion.values['1.2']
@@ -196,6 +203,10 @@ describe('gulp-angular generator', function () {
 
   // Prompt #2:  Which Angular's modules ?
   describe('without ngModules option', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should NOT add dependency for ngModules', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         angularModules: []
@@ -222,7 +233,11 @@ describe('gulp-angular generator', function () {
   });
 
   // Prompt #3: Which JavaScript library ?
-  describe('with option: [jQuery 2.x.x]', function () {
+  describe('with prompt: [jQuery 2.x.x]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for jQuery 2.x.x', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jQuery: prompts.jQuery.values['jquery 2']
@@ -238,7 +253,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [ZeptoJS 1.1.x]', function () {
+  describe('with prompt: [ZeptoJS 1.1.x]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for ZeptoJS 1.1.x', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jQuery: prompts.jQuery.values['zeptojs 1.1']
@@ -254,7 +273,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [jqLite]', function () {
+  describe('with prompt: [jqLite]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should NOT add dependency for jqLite', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jQuery: prompts.jQuery.values.none
@@ -275,7 +298,11 @@ describe('gulp-angular generator', function () {
   });
 
   // Prompt #4: Which Angular's modules for RESTful resource interaction ?
-  describe('with option: [Restangular]', function () {
+  describe('with prompt: [Restangular]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Restangular', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         resource: prompts.resource.values.restangular
@@ -294,7 +321,11 @@ describe('gulp-angular generator', function () {
     });
   });
 
-  describe('with option: [$http]', function () {
+  describe('with prompt: [$http]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should NOT add dependency for $http', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         resource: prompts.resource.values.none
@@ -318,7 +349,11 @@ describe('gulp-angular generator', function () {
   });
 
   // Prompt #5: Which Angular's modules for routing ?
-  describe('with option: [UI Router]', function () {
+  describe('with prompt: [UI Router]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for UI Router', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         router: prompts.router.values['angular-ui-router']
@@ -339,6 +374,10 @@ describe('gulp-angular generator', function () {
     });
   });
   describe('without router option', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should NOT add dependency', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         router: prompts.router.values.none
@@ -364,7 +403,11 @@ describe('gulp-angular generator', function () {
   });
 
   // Prompt #6: Which UI framework ?
-  describe('with option: [Foundation, angular-foundation, Node SASS]', function () {
+  describe('with prompt: [Foundation, angular-foundation, Node SASS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Foundation with SASS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -389,7 +432,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Foundation, angular-foundation, Ruby SASS]', function () {
+  describe('with prompt: [Foundation, angular-foundation, Ruby SASS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Foundation with SASS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -413,7 +460,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Foundation, angular-foundation, LESS]', function () {
+  describe('with prompt: [Foundation, angular-foundation, LESS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Foundation with LESS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -437,7 +488,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Foundation, angular-foundation, Stylus]', function () {
+  describe('with prompt: [Foundation, angular-foundation, Stylus]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Foundation with Stylus', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -461,7 +516,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Foundation, angular-foundation, CSS]', function () {
+  describe('with prompt: [Foundation, angular-foundation, CSS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Foundation with CSS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -489,7 +548,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Foundation, Official, CSS]', function () {
+  describe('with prompt: [Foundation, Official, CSS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should not add angular-foundation', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.foundation,
@@ -518,7 +581,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, Ruby SASS]', function () {
+  describe('with prompt: [Bootstrap, Ruby SASS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Bootstrap with SASS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.bootstrap,
@@ -543,7 +610,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, LESS]', function () {
+  describe('with prompt: [Bootstrap, LESS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Bootstrap with LESS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.bootstrap,
@@ -568,7 +639,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, Stylus]', function () {
+  describe('with prompt: [Bootstrap, Stylus]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Bootstrap with Stylus', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.bootstrap,
@@ -593,7 +668,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, CSS]', function () {
+  describe('with prompt: [Bootstrap, CSS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add dependency for Bootstrap with CSS', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.bootstrap,
@@ -623,7 +702,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, UI Boostrap]', function () {
+  describe('with prompt: [Bootstrap, UI Boostrap]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add UI Bootstrap Bower and Angular module', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         bootstrapComponents: prompts.bootstrapComponents.values['ui-bootstrap']
@@ -641,7 +724,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Bootstrap, Standard Boostrap JS]', function () {
+  describe('with prompt: [Bootstrap, Standard Boostrap JS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add Bootstrap JS files', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         bootstrapComponents: prompts.bootstrapComponents.values.official
@@ -658,7 +745,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Angular Material]', function () {
+  describe('with prompt: [Angular Material]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add Angular Material Bower and Angular modules', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values['angular-material']
@@ -678,7 +769,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None UI Framework, Node SASS]', function () {
+  describe('with prompt: [None UI Framework, Node SASS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add index style', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.none,
@@ -699,7 +794,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None UI Framework, Ruby SASS]', function () {
+  describe('with prompt: [None UI Framework, Ruby SASS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add index style', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.none,
@@ -720,7 +819,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None UI Framework, LESS]', function () {
+  describe('with prompt: [None UI Framework, LESS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add index style', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.none,
@@ -741,7 +844,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None UI Framework, Stylus]', function () {
+  describe('with prompt: [None UI Framework, Stylus]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add index style', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.none,
@@ -762,7 +869,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None UI Framework, CSS]', function () {
+  describe('with prompt: [None UI Framework, CSS]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add index style', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         ui: prompts.ui.values.none,
@@ -778,7 +889,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [None JS Preprocessor]', function () {
+  describe('with prompt: [None JS Preprocessor]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should not add browerify and inject js files from src', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jsPreprocessor: prompts.jsPreprocessor.values.none
@@ -806,7 +921,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [CoffeeScript]', function () {
+  describe('with prompt: [CoffeeScript]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should not add browerify and add gulp-coffee', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jsPreprocessor: prompts.jsPreprocessor.values.coffee
@@ -842,7 +961,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [6to5]', function () {
+  describe('with prompt: [6to5]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add browerify and gulp-6to5', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jsPreprocessor: prompts.jsPreprocessor.values['6to5']
@@ -872,7 +995,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [Traceur]', function () {
+  describe('with prompt: [Traceur]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should add browerify and gulp-traceur and traceur-runtime', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jsPreprocessor: prompts.jsPreprocessor.values.traceur
@@ -905,7 +1032,11 @@ describe('gulp-angular generator', function () {
       });
     });
   });
-  describe('with option: [TypeScript]', function () {
+  describe('with prompt: [TypeScript]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should not add browerify and gulp-typescript and dt-angular', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         jsPreprocessor: prompts.jsPreprocessor.values.typescript
@@ -942,7 +1073,11 @@ describe('gulp-angular generator', function () {
     });
   });
 
-  describe('with option: [No HTML Preprocessor]', function () {
+  describe('with prompt: [No HTML Preprocessor]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should not have consolidate gulp task', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         htmlPreprocessors: []
@@ -964,7 +1099,11 @@ describe('gulp-angular generator', function () {
     });
   });
 
-  describe('with option: [All HTML Preprocessors]', function () {
+  describe('with prompt: [All HTML Preprocessors]', function () {
+    before(function() { 
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), skipOptions);
+    });
+
     it('should have consolidate gulp task', function (done) {
       helpers.mockPrompt(gulpAngular, _.assign(defaultPrompts, {
         htmlPreprocessors: _.map(prompts.htmlPreprocessors.choices, function(c) {return c.value;})
@@ -985,61 +1124,65 @@ describe('gulp-angular generator', function () {
     });
   });
 
-  describe('with option: [src:path/to/public e2e:path/to/e2e/test dist:path/to/dist tmp:.tmp/folder]', function () {
-    // Default scenario: angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, jQuery 1.x.x, ngResource, ngRoute, bootstrap, node-sass, standard js, jade
+  describe('with paths: [src:path/to/public e2e:path/to/e2e/test dist:path/to/dist tmp:.tmp/folder]', function () {
+    before(function() {
+      optionCase = _.assign(JSON.parse(JSON.stringify(mockOptions.defaults)), 
+        _.merge({
+          'app-path': 'path/to/public',
+          'dist-path': 'path/to/dist',
+          'e2e-path': 'path/to/test',
+          'tmp': '.tmp/folder'
+        }, skipOptions));
+    });
+
+
     it('should generate the expected files and their content', function (done) {
       helpers.mockPrompt(gulpAngular, defaultPrompts);
-      
-      _.assign(defaultOptions, {
-        'app-path': 'path/to/public',
-        'dist-path': 'path/to/dist',
-        'e2e-path': 'path/to/test',
-        'tmp': '.tmp/folder'
-      });
 
       expectedFile = _.map(expectedFile, function(file) {
-        if (file.indexOf('src') === 0)
-          return file.replace('src', defaultOptions['app-path']);
+        if (file.indexOf('src') === 0) {
+          return file.replace('src', optionCase['app-path']);
+        }
         return file;
       });
 
       gulpAngular.run({}, function () {
         assert.file([].concat(expectedFile, [
           // Option: Javascript
-          defaultOptions['app-path'] + '/app/index.js',
-          defaultOptions['app-path'] + '/app/main/main.controller.js',
-          defaultOptions['app-path'] + '/app/main/main.controller.spec.js',
-          defaultOptions['app-path'] + '/components/navbar/navbar.controller.js',
+          optionCase['app-path'] + '/app/index.js',
+          optionCase['app-path'] + '/app/main/main.controller.js',
+          optionCase['app-path'] + '/app/main/main.controller.spec.js',
+          optionCase['app-path'] + '/components/navbar/navbar.controller.js',
           'karma.conf.js',
           'protractor.conf.js',
-          defaultOptions['e2e-path'] + '/main.po.js',
-          defaultOptions['e2e-path'] + '/main.spec.js',
+          optionCase['e2e-path'] + '/main.po.js',
+          optionCase['e2e-path'] + '/main.spec.js',
 
           // Option: ngRoute
-          defaultOptions['app-path'] + '/app/main/main.html',
+          optionCase['app-path'] + '/app/main/main.html',
 
           // Option: Sass (Node)
-          defaultOptions['app-path'] + '/app/index.scss',
-          defaultOptions['app-path'] + '/app/vendor.scss',
+          optionCase['app-path'] + '/app/index.scss',
+          optionCase['app-path'] + '/app/vendor.scss',
         ]));
 
         assert.noFile([
-          defaultOptions['app-path'] + '/**/*.ts',
-          defaultOptions['app-path'] + '/**/*.coffee'
+          optionCase['app-path'] + '/**/*.ts',
+          optionCase['app-path'] + '/**/*.coffee'
         ]);
 
         assert.fileContent([].concat(expectedGulpContent, [
           // Check src/app/index.js
-          [defaultOptions['app-path'] + '/app/index.js', /'ngAnimate'/],
-          [defaultOptions['app-path'] + '/app/index.js', /'ngCookies'/],
-          [defaultOptions['app-path'] + '/app/index.js', /'ngTouch'/],
-          [defaultOptions['app-path'] + '/app/index.js', /'ngSanitize'/],
-          [defaultOptions['app-path'] + '/app/index.js', /'ngResource'/],
-          [defaultOptions['app-path'] + '/app/index.js', /'ngRoute'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngAnimate'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngCookies'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngTouch'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngSanitize'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngResource'/],
+          [optionCase['app-path'] + '/app/index.js', /'ngRoute'/],
 
           // Check src/app/vendor.scss
-          [defaultOptions['app-path'] + '/app/vendor.scss', /\$icon-font-path: "\.\.\/\.\.\/\.\.\/\.\.\/bower_components\/bootstrap-sass-official\/assets\/fonts\/bootstrap\/";/],
-          [defaultOptions['app-path'] + '/app/vendor.scss', /@import '\.\.\/\.\.\/\.\.\/\.\.\/bower_components\/bootstrap-sass-official\/assets\/stylesheets\/bootstrap';/],
+          [optionCase['app-path'] + '/app/vendor.scss', /\$icon-font-path: "\.\.\/\.\.\/\.\.\/\.\.\/bower_components\/bootstrap-sass-official\/assets\/fonts\/bootstrap\/";/],
+          [optionCase['app-path'] + '/app/vendor.scss', /@import '\.\.\/\.\.\/\.\.\/\.\.\/bower_components\/bootstrap-sass-official\/assets\/stylesheets\/bootstrap';/],
 
           // Check bower.json
           ['bower.json', libRegexp('angular', prompts.angularVersion.values['1.3'])],
@@ -1070,7 +1213,7 @@ describe('gulp-angular generator', function () {
 
   // For future case
   /*
-  describe('with option: []', function () {
+  describe('with prompt: []', function () {
     it('should', function (done) {
       var _ = gulpAngular._;
 
