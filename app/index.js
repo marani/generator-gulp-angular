@@ -41,14 +41,22 @@ var GulpAngularGenerator = yeoman.generators.Base.extend({
       var mockPrompts = require('./src/mock-prompts.js');
       var mockOptions = require('./src/mock-options.js');
       var savableOptionsDefaults = this._.filter(mockOptions.defaults, function(value, name) {
-        return options[option.name].save;
-      });
-      this.config.set('props', mockPrompts.defaults);
-      this.config.set('options', savableOptionsDefaults);
+        return this._.find(options, { name: name }).save;
+      }.bind(this));
+      this.props = {
+        paths: {
+          src: mockOptions.defaults['app-path'],
+          dist: mockOptions.defaults['dist-path'],
+          e2e: mockOptions.defaults['e2e-path'],
+          tmp: mockOptions.defaults['tmp-path']
+        }
+      }
+      this.config.set('props', this._.merge(this.props, mockPrompts.defaults));
 
       this.log('__________________________');
       this.log('You use ' + chalk.green('--default') + ' option:');
       this.log('\t* angular 1.3.x\n\t* ngAnimate\n\t* ngCookies\n\t* ngTouch\n\t* ngSanitize\n\t* jQuery 1.x.x\n\t* ngResource\n\t* ngRoute\n\t* bootstrap\n\t* ui-bootstrap\n\t* node-sass');
+      this.log('\n\t* --app-path=\'src\'\n\t* --dist-path=\'dist\'\n\t* --e2e-path=\'e2e\'\n\t* --tmp-path=\'.tmp\'');
       this.log('__________________________\n');
     }
   },
