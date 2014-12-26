@@ -7,7 +7,6 @@ var $ = require('gulp-load-plugins')({
 });
 
 var paths = require('../.yo-rc.json').props.paths;
-
 <% if (props.cssPreprocessor.key !== 'none') { %>
 gulp.task('styles', ['wiredep', 'injector:css:preprocessor'], function () {<% if (props.cssPreprocessor.key === 'less') { %>
   return gulp.src([paths.src + '/app/index.less', paths.src + '/app/vendor.less'])
