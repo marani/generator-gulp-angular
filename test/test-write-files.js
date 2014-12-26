@@ -13,6 +13,14 @@ describe('gulp-angular generator files', function () {
     var actualTemplate = 0;
 
     files.call({
+      props: {
+        paths: {
+          src: 'src',
+          dist: 'dist',
+          e2e: 'e2e',
+          tmp: '.tmp'
+        }
+      },
       _: _,
       fs: {
         copy: function() { actualCopy++; },

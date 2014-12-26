@@ -85,7 +85,6 @@ describe('gulp-angular generator', function () {
 
       done();
     });
-
   });
 
   describe('with default options: [src, dist, e2e, .tmp] [angular 1.3.x, ngAnimate, ngCookies, ngTouch, ngSanitize, jQuery 1.x.x, ngResource, ngRoute, bootstrap, ui-bootstrap, node-sass]', function () {
