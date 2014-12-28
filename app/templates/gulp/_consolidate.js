@@ -3,8 +3,7 @@
 var consolidate = require('gulp-consolidate');
 var rename = require('gulp-rename');
 var gulp = require('gulp');
-
-var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
+var paths;
 
 var engines = [
   <%= consolidateParameters.join(',\n  ') %>
@@ -24,16 +23,23 @@ function buildTaskFunction(engine) {
   };
 }
 
-var tasks = [];
+function registerTasks(config) {
+  paths = config.paths;
+  var tasks = [];
 
-for (var i=0, l=engines.length; i < l; i++) {
-  var engine = engines[i];
+  for (var i=0, l=engines.length; i < l; i++) {
+    var engine = engines[i];
 
-  gulp.task('consolidate:' + engine[0] + ':app', buildTemplates.bind(this, engine, paths.src + '/app/**/*.jade', paths.tmp + '/app/'));
-  gulp.task('consolidate:' + engine[0] + ':components', buildTemplates.bind(this, engine, paths.src + '/components/**/*.jade', paths.tmp + '/components/'));
-  gulp.task('consolidate:' + engine[0], ['consolidate:' + engine[0] + ':app', 'consolidate:' + engine[0] + ':components' ]);
+    gulp.task('consolidate:' + engine[0] + ':app', buildTemplates.bind(this, engine, paths.src + '/app/**/*.jade', paths.tmp + '/app/'));
+    gulp.task('consolidate:' + engine[0] + ':components', buildTemplates.bind(this, engine, paths.src + '/components/**/*.jade', paths.tmp + '/components/'));
+    gulp.task('consolidate:' + engine[0], ['consolidate:' + engine[0] + ':app', 'consolidate:' + engine[0] + ':components' ]);
 
-  tasks.push('consolidate:' + engine[0]);
+    tasks.push('consolidate:' + engine[0]);
+  }
+
+  gulp.task('consolidate', tasks);
 }
 
-gulp.task('consolidate', tasks);
+module.exports = {
+  registerTasks: registerTasks
+}

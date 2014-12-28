@@ -6,12 +6,7 @@ var $ = require('gulp-load-plugins')();
 
 var browserSync = require('browser-sync');
 
-var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
-
-// Downloads the selenium webdriver
-gulp.task('webdriver-update', $.protractor.webdriver_update);
-
-gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
+var paths;
 
 function runProtractor (done) {
 
@@ -30,6 +25,16 @@ function runProtractor (done) {
     });
 }
 
-gulp.task('protractor', ['protractor:src']);
-gulp.task('protractor:src', ['serve:e2e', 'webdriver-update'], runProtractor);
-gulp.task('protractor:dist', ['serve:e2e-dist', 'webdriver-update'], runProtractor);
+function registerTasks(config) {
+  paths = config.paths;
+  // Downloads the selenium webdriver
+  gulp.task('webdriver-update', $.protractor.webdriver_update);
+  gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
+  gulp.task('protractor', ['protractor:src']);
+  gulp.task('protractor:src', ['serve:e2e', 'webdriver-update'], runProtractor);
+  gulp.task('protractor:dist', ['serve:e2e-dist', 'webdriver-update'], runProtractor);
+}
+
+module.exports = {
+  registerTasks: registerTasks
+}

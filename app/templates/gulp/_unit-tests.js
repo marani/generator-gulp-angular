@@ -6,9 +6,9 @@ var $ = require('gulp-load-plugins')();
 
 var wiredep = require('wiredep');
 
-var paths = require('../.yo-rc.json')['generator-gulp-angular'].props.paths;
+var paths;
 
-function runTests (singleRun, done) {
+function runTests(singleRun, done) {
   var bowerDeps = wiredep({
     directory: 'bower_components',
     exclude: ['bootstrap-sass-official'],
@@ -45,13 +45,20 @@ function runTests (singleRun, done) {
     });
 }
 
-<% if (props.jsPreprocessor.key === 'none') { %>
-  gulp.task('test', function (done) { runTests(true /* singleRun */, done) });
-  gulp.task('test:auto', function (done) { runTests(false /* singleRun */, done) });
-<% } else if (props.jsPreprocessor.extension === 'js') { %>
-  gulp.task('test', ['browserify'], function (done) { runTests(true /* singleRun */, done) });
-  gulp.task('test:auto', ['browserify'], function (done) { runTests(false /* singleRun */, done) });
-<% } else { %>
-  gulp.task('test', ['scripts'], function (done) { runTests(true /* singleRun */, done) });
-  gulp.task('test:auto', ['scripts'], function (done) { runTests(false /* singleRun */, done) });
-<% } %>
+function registerTasks(config) {
+  paths = config.paths;
+  <% if (props.jsPreprocessor.key === 'none') { %>
+    gulp.task('test', function (done) { runTests(true /* singleRun */, done) });
+    gulp.task('test:auto', function (done) { runTests(false /* singleRun */, done) });
+  <% } else if (props.jsPreprocessor.extension === 'js') { %>
+    gulp.task('test', ['browserify'], function (done) { runTests(true /* singleRun */, done) });
+    gulp.task('test:auto', ['browserify'], function (done) { runTests(false /* singleRun */, done) });
+  <% } else { %>
+    gulp.task('test', ['scripts'], function (done) { runTests(true /* singleRun */, done) });
+    gulp.task('test:auto', ['scripts'], function (done) { runTests(false /* singleRun */, done) });
+  <% } %>
+}
+
+module.exports = {
+  registerTasks: registerTasks
+}
